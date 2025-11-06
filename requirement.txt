@@ -11,9 +11,13 @@ pandas>=1.3.0,<3.0.0
 # Visualization
 matplotlib>=3.3.0,<4.0.0
 seaborn>=0.11.0,<1.0.0
-
-# Additional plotting utilities (optional)
 plotly>=5.0.0,<6.0.0
+
+# Network packet manipulation
+scapy>=2.4.5
+
+# Colored terminal output
+colorama>=0.4.4
 
 # Development and testing tools (optional)
 pytest>=6.0.0,<8.0.0
