@@ -30,19 +30,22 @@ def export_metrics_csv(filename="metrics_detailed.csv"):
     if not state.simulation_history:
         print("[WARN] Pas de données pour exporter CSV.")
         return
+    # Colonnes incluant la liste avg_energy_clusters sous forme chaîne séparée par ;
+    fieldnames = ["round", "clusters", "ch_reelected", "failures", "avg_energy", "avg_energy_clusters", "time", "routing_success"]
     with open(filename, "w", newline='') as csvfile:
-        fieldnames = ["round", "clusters", "ch_reelected", "failures", "avg_energy", "time", "routing_success"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for entry in state.simulation_history:
+            avg_energy_clusters_str = ";".join(f"{e:.3f}" for e in entry.get("avg_energy_clusters", []))
             writer.writerow({
                 "round": entry["round"],
                 "clusters": entry["clusters"],
                 "ch_reelected": entry["ch_reelected"],
                 "failures": entry["failures"],
-                "avg_energy": f"{entry['avg_energy']:.2f}",
+                "avg_energy": f"{entry['avg_energy']:.3f}",
+                "avg_energy_clusters": avg_energy_clusters_str,
                 "time": f"{entry['time']:.3f}",
-                "routing_success": f"{entry['routing_success']:.3f}",
+                "routing_success": f"{entry['routing_success']:.5f}",
             })
     print(f"[EXPORT] Données métriques exportées vers {filename}")
 
@@ -51,4 +54,3 @@ def print_logs():
         print("[INFO] Aucun log disponible, lancez d'abord une simulation.")
         return
     print("\n".join(state.logs))
-
